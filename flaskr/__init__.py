@@ -35,3 +35,32 @@ def methods():
 @app.route('/tempfile')
 def showfile():
     return render_template('index.html')
+
+
+# accessing something with url parameters - /login?key=value - used with GET methods.
+@app.route('/login', methods=['GET'])
+def login():
+    word = request.args.get('key', 'default')
+    return {"message": word}
+
+
+# In the request body, select the "form-data" option.
+@app.route('/signup', methods=['POST'])
+def signup():
+    key = request.form.get('name', 'default')  # no need to provide default, automatic provides None
+    key2 = request.form['age']  # this will cause an error if default not provide.
+    return {"data": [key, key2]}
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    uploaded_file = request.files['file']
+
+    if uploaded_file:
+        # Process the file here if needed
+        file_content = uploaded_file.read()
+
+        # You can process the file content as needed and return it
+        return file_content
+
+    return "No file uploaded", 400  # Returning a valid response.
