@@ -14,16 +14,18 @@ def hello_world():
 # defining HTTP methods
 @app.route('/hello', methods=['GET'])
 def hello():
-    return {"Hello World"}  # returning a json response.
+    return {"message": "Hello World"}  # returning a json response.
+
+# Resolving error - use Jsonify or python dictionary to json response.
 
 
 # Having Two methods - to check method use request object
-@app.route('/hello', methods=['GET', 'POST'])
-def hello():
+@app.route('/methods', methods=['GET', 'POST'])  # Debug done to this line
+def methods():
     if request.method == 'POST':
-        return {"Hello world, this is POST method"}  # returning a json response.
+        return {"message": "Hello world, this is POST method"}  # returning a json response.
     else:
-        return {"Hello World"}  # returning a json response.
+        return {"message": "Hello World, this is GET method"}  # returning a json response.
 
 # You can also separate both request into different function.
 # If GET is present, Flask automatically adds support for the HEAD method and handles HEAD requests according to the HTTP RFC. Likewise, OPTIONS is automatically implemented for you.
