@@ -1,6 +1,9 @@
 from flask import (Flask,
                    request,  # importing request object
-                   render_template)  # importing render_template object
+                   render_template,  # importing render_template object
+                   make_response,  # importing make_response to create responses
+                   redirect,  # importing redirect to desired url
+                   url_for)  # importing url_for to create urls
 
 app = Flask(__name__)
 
@@ -64,3 +67,43 @@ def upload():
         return file_content
 
     return "No file uploaded", 400  # Returning a valid response.
+
+
+# Setting cookie to response object
+@app.route('/set_cookie')
+def set_cookie():
+    resp = make_response("Cookie set")
+    resp.set_cookie('user', 'Shiv')
+    return resp
+
+
+# Getting cookie
+@app.route('/get_cookie')
+def get_cookie():
+    user = request.cookies.get('user')
+    return f"Hello, {user}"
+
+
+# To redirect user to another url use this
+@app.route('/original')
+def original():
+    # Redirect to another route using 'redirect' function
+    return redirect(url_for('new_route'))
+
+
+@app.route('/new')
+def new_route():
+    return "This is the new route."
+
+
+# To handle any error use errorhandler decorator - this will get any error with code 404 and will show custom template.
+# You can set this type of custom error handler templates for any code like - 500 etc...
+@app.errorhandler(404)
+def page_not_found():
+    return render_template('page_not_found.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error():
+    # Render a custom error template and return it with a 500 status code
+    return render_template('500_error.html'), 500
