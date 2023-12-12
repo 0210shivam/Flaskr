@@ -1,5 +1,5 @@
 # Flaskr
-**Testing for apis -**
+**Description-** This project contains practical examples for flask Cookie management 
 
 ## Routes
 1. `/` - index
